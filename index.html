@@ -880,6 +880,49 @@ margin-top: 4px;
 
 .budget-save-btn:hover { opacity: 0.88; }
 
+/* ===== BACKUP/RESTORE ===== */
+.backup-section {
+margin-top: 8px;
+padding-top: 16px;
+border-top: 2px solid var(--border);
+}
+
+.backup-btn {
+width: 100%;
+padding: 14px;
+border: none;
+border-radius: 12px;
+font-size: 15px;
+font-weight: 700;
+font-family: 'Noto Sans JP', sans-serif;
+cursor: pointer;
+transition: opacity 0.2s;
+}
+
+.backup-btn:hover { opacity: 0.88; }
+
+.backup-export {
+background: var(--income);
+color: white;
+margin-bottom: 10px;
+}
+
+.backup-import {
+background: var(--primary);
+color: white;
+margin-bottom: 10px;
+}
+
+.backup-note {
+font-size: 11px;
+color: var(--text-muted);
+background: #FFF3EA;
+border-radius: 8px;
+padding: 10px 12px;
+border-left: 3px solid var(--primary);
+line-height: 1.7;
+}
+
 /* scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
@@ -1021,10 +1064,18 @@ margin-top: 4px;
 <button onclick="addCategory('income')">追加</button>
 </div>
 </div>
+<div class="backup-section">
+<div class="settings-section-title">📦 データ管理</div>
+<button class="backup-btn backup-export" onclick="exportData()">📤 バックアップを保存する</button>
+<button class="backup-btn backup-import" onclick="document.getElementById('importFile').click()">📥 バックアップから復元する</button>
+<input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+<div class="backup-note">
+⚠️ アプリ更新やホーム画面アイコンを再追加する前に、必ずバックアップを保存してください。<br>
+バックアップファイルはiPhoneの「ファイル」アプリに保存されます。
 </div>
 </div>
-
-<!-- BUDGET PAGE -->
+</div>
+</div>
 <div class="page" id="page-budget">
 <div class="budget-content">
 <div class="budget-month-label" id="budgetMonthLabel"></div>
@@ -1696,6 +1747,66 @@ if (val > 0) catBudgets[cat] = val;
 saveBudgetData(y, m, { total: total, cats: catBudgets });
 renderBudgetPage();
 showToast('予算を保存しました 💾');
+}
+
+// ===== BACKUP / RESTORE =====
+function exportData() {
+try {
+var backupData = {};
+var keys = ['kakeibo_entries', 'kakeibo_categories', 'kakeibo_budgets'];
+keys.forEach(function(key) {
+var val = localStorage.getItem(key);
+if (val) backupData[key] = JSON.parse(val);
+});
+
+var jsonStr = JSON.stringify(backupData, null, 2);
+var blob = new Blob([jsonStr], { type: 'application/json' });
+var url = URL.createObjectURL(blob);
+var a = document.createElement('a');
+var now = new Date();
+var fileName = 'かけいぼ_バックアップ_' + now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '.json';
+a.href = url;
+a.download = fileName;
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+URL.revokeObjectURL(url);
+showToast('バックアップを保存しました 📤');
+} catch (e) {
+showToast('バックアップに失敗しました');
+}
+}
+
+function importData(event) {
+var file = event.target.files[0];
+if (!file) return;
+
+var reader = new FileReader();
+reader.onload = function(e) {
+try {
+var data = JSON.parse(e.target.result);
+var keys = ['kakeibo_entries', 'kakeibo_categories', 'kakeibo_budgets'];
+var restored = 0;
+keys.forEach(function(key) {
+if (data[key]) {
+localStorage.setItem(key, JSON.stringify(data[key]));
+restored++;
+}
+});
+
+if (restored > 0) {
+renderCalendar();
+updateSummary();
+showToast('データを復元しました 📥');
+} else {
+showToast('有効なデータが見つかりませんでした');
+}
+} catch (err) {
+showToast('ファイルの読み込みに失敗しました');
+}
+};
+reader.readAsText(file);
+event.target.value = '';
 }
 
 // ===== INIT =====
