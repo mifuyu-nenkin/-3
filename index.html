@@ -51,6 +51,7 @@ padding: 14px 16px 12px;
 position: sticky;
 top: 0;
 z-index: 100;
+transition: background 0.5s ease;
 }
 
 .month-nav {
@@ -166,7 +167,7 @@ font-family: 'Zen Kaku Gothic New', sans-serif;
 .summary-value.expense { color: var(--expense); }
 .summary-value.total { color: var(--text); }
 
-/* ===== DAY SUMMARY BANNER (NEW) ===== */
+/* ===== DAY SUMMARY BANNER ===== */
 .day-summary-banner {
 display: none;
 background: linear-gradient(135deg, #FFF8FA, #FFF0E6);
@@ -586,6 +587,7 @@ line-height: 1;
 display: flex;
 gap: 8px;
 margin-top: 4px;
+align-items: center;
 }
 
 .add-category-row input[type="text"] {
@@ -625,6 +627,101 @@ border-radius: 8px;
 padding: 8px 12px;
 border-left: 3px solid var(--primary);
 }
+
+/* ===== EMOJI PICKER ===== */
+.emoji-btn {
+width: 40px;
+height: 40px;
+border: 1px solid var(--border);
+border-radius: 8px;
+background: var(--white);
+font-size: 20px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+transition: border-color 0.2s, transform 0.15s;
+}
+.emoji-btn:hover { border-color: var(--primary); transform: scale(1.08); }
+
+.emoji-picker-popup {
+display: none;
+position: fixed;
+bottom: 0;
+left: 50%;
+transform: translateX(-50%);
+width: 100%;
+max-width: 430px;
+background: var(--white);
+border-radius: 20px 20px 0 0;
+box-shadow: 0 -8px 30px rgba(0,0,0,0.15);
+z-index: 250;
+padding: 16px 12px 24px;
+animation: slideUp 0.25s ease;
+}
+.emoji-picker-popup.open { display: block; }
+
+.emoji-picker-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 12px;
+padding: 0 4px;
+}
+.emoji-picker-title {
+font-size: 15px;
+font-weight: 700;
+color: var(--text);
+}
+.emoji-picker-close {
+background: #EEE;
+border: none;
+width: 30px;
+height: 30px;
+border-radius: 50%;
+font-size: 16px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.emoji-category-label {
+font-size: 11px;
+font-weight: 700;
+color: var(--text-muted);
+margin: 8px 0 4px 4px;
+}
+
+.emoji-grid {
+display: grid;
+grid-template-columns: repeat(8, 1fr);
+gap: 4px;
+max-height: 220px;
+overflow-y: auto;
+}
+
+.emoji-option {
+font-size: 22px;
+padding: 6px;
+border: none;
+background: none;
+cursor: pointer;
+border-radius: 8px;
+transition: background 0.15s, transform 0.1s;
+text-align: center;
+}
+.emoji-option:hover { background: var(--bg); transform: scale(1.15); }
+
+.emoji-picker-overlay {
+display: none;
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.3);
+z-index: 240;
+}
+.emoji-picker-overlay.open { display: block; }
 
 /* ===== MODAL ===== */
 .modal-overlay {
@@ -733,19 +830,23 @@ align-items: center;
 .budget-total-value { font-size: 16px; font-weight: 700; font-family: 'Zen Kaku Gothic New', sans-serif; }
 
 .budget-bar-wrap { margin-top: 8px; }
+
 .budget-bar-bg {
 background: #EEE;
 border-radius: 20px;
 height: 12px;
 overflow: hidden;
 }
+
 .budget-bar-fill {
 height: 100%;
 border-radius: 20px;
 background: var(--income);
 transition: width 0.4s ease;
 }
+
 .budget-bar-fill.over { background: var(--expense); }
+
 .budget-bar-pct {
 font-size: 12px;
 color: var(--text-muted);
@@ -780,6 +881,7 @@ transition: border-color 0.2s;
 }
 
 .budget-input-row input:focus { border-color: var(--primary); }
+
 .yen-label { font-size: 15px; font-weight: 700; color: var(--text-muted); }
 
 .budget-cat-list {
@@ -853,7 +955,6 @@ transition: width 0.4s ease;
 
 .budget-cat-bar-fill.over { background: var(--expense); }
 
-/* ===== BUDGET CATEGORY REMAIN (NEW) ===== */
 .budget-cat-remain {
 font-size: 12px;
 font-weight: 700;
@@ -980,7 +1081,7 @@ line-height: 1.7;
 <div class="summary-value total" id="sumTotal">0円</div>
 </div>
 </div>
-<!-- DAY SUMMARY BANNER (NEW) -->
+<!-- DAY SUMMARY BANNER -->
 <div class="day-summary-banner" id="daySummaryBanner">
 <span class="day-summary-date" id="daySummaryDate"></span>
 <div class="day-summary-amounts" id="daySummaryAmounts"></div>
@@ -1052,6 +1153,7 @@ line-height: 1.7;
 <div style="height:10px"></div>
 <div class="category-list" id="expenseCategoryList"></div>
 <div class="add-category-row" style="margin-top:8px">
+<button class="emoji-btn" id="expenseEmojiBtn" onclick="openEmojiPicker('expense')" title="絵文字を選ぶ">📌</button>
 <input type="text" id="newExpenseCat" placeholder="新しいカテゴリ名">
 <button onclick="addCategory('expense')">追加</button>
 </div>
@@ -1060,6 +1162,7 @@ line-height: 1.7;
 <div class="settings-section-title">収入カテゴリ</div>
 <div class="category-list" id="incomeCategoryList"></div>
 <div class="add-category-row" style="margin-top:8px">
+<button class="emoji-btn" id="incomeEmojiBtn" onclick="openEmojiPicker('income')" title="絵文字を選ぶ">📌</button>
 <input type="text" id="newIncomeCat" placeholder="新しいカテゴリ名">
 <button onclick="addCategory('income')">追加</button>
 </div>
@@ -1118,14 +1221,106 @@ line-height: 1.7;
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
+<!-- EMOJI PICKER -->
+<div class="emoji-picker-overlay" id="emojiOverlay" onclick="closeEmojiPicker()"></div>
+<div class="emoji-picker-popup" id="emojiPickerPopup">
+<div class="emoji-picker-header">
+<span class="emoji-picker-title">絵文字を選ぶ</span>
+<button class="emoji-picker-close" onclick="closeEmojiPicker()">✕</button>
+</div>
+<div id="emojiPickerContent"></div>
+</div>
+
 <script>
+// ===== MONTHLY PASTEL THEMES =====
+var MONTH_THEMES = [
+{ primary: '#E8789A', light: '#F2A8BC', dark: '#C45578', bg: '#FDF5F7', border: '#F0DDE4' }, // 1月 ピンク
+{ primary: '#B088D0', light: '#D0B8E8', dark: '#8A60B0', bg: '#F8F3FC', border: '#E8D8F0' }, // 2月 ラベンダー
+{ primary: '#F0A0B8', light: '#F8C8D8', dark: '#D87898', bg: '#FFF5F8', border: '#F5D8E2' }, // 3月 桜ピンク
+{ primary: '#7EC8A0', light: '#A8E0C0', dark: '#58A878', bg: '#F3FBF5', border: '#D0EAD8' }, // 4月 若草
+{ primary: '#70B8D8', light: '#A0D8F0', dark: '#4890B0', bg: '#F2F8FC', border: '#C8E0F0' }, // 5月 空色
+{ primary: '#9098D8', light: '#B8C0F0', dark: '#6870B0', bg: '#F5F5FC', border: '#D0D4F0' }, // 6月 紫陽花
+{ primary: '#F0B870', light: '#F8D8A0', dark: '#D09848', bg: '#FFFBF2', border: '#F0E0C0' }, // 7月 向日葵
+{ primary: '#E88870', light: '#F0B0A0', dark: '#C86850', bg: '#FEF5F3', border: '#F0D8D0' }, // 8月 珊瑚
+{ primary: '#D8A070', light: '#E8C8A0', dark: '#B87848', bg: '#FBF7F2', border: '#E8D8C0' }, // 9月 秋茶
+{ primary: '#E0A090', light: '#F0C8B8', dark: '#C07868', bg: '#FDF6F3', border: '#F0D8D0' }, // 10月 紅葉
+{ primary: '#C8A0B0', light: '#E0C0D0', dark: '#A07888', bg: '#FAF5F7', border: '#E8D0D8' }, // 11月 葡萄
+{ primary: '#80B8C0', light: '#A8D8E0', dark: '#5898A0', bg: '#F3FAFB', border: '#C8E0E4' }, // 12月 冬空
+];
+
+function applyMonthTheme(month) {
+var theme = MONTH_THEMES[month];
+var root = document.documentElement;
+root.style.setProperty('--primary', theme.primary);
+root.style.setProperty('--primary-light', theme.light);
+root.style.setProperty('--primary-dark', theme.dark);
+root.style.setProperty('--bg', theme.bg);
+root.style.setProperty('--border', theme.border);
+}
+
+// ===== EMOJI PICKER DATA =====
+var EMOJI_CATEGORIES = {
+'お金・買い物': ['🛒','💰','💴','💵','💳','🧾','🪙','💸','🏧','🛍️'],
+'食べ物': ['🍽️','🍜','🍣','🍙','🍕','🍔','🥗','🍰','☕','🍺','🧁','🍳','🥐','🍱','🍦'],
+'交通': ['🚃','🚗','🚌','🚲','✈️','🚄','⛽','🛵','🚶','🏃'],
+'住まい・生活': ['🏠','💡','🧴','🚿','🧹','🗑️','🛏️','🔑','📦','🧺'],
+'健康・美容': ['💊','🏥','💄','💇','🏋️','🧘','🩺','🦷','👓','🩹'],
+'趣味・娯楽': ['🎮','🎬','🎵','📚','🎨','🎯','⚽','🏖️','🎤','🎲'],
+'仕事・学校': ['💻','📱','📝','🎓','💼','🖥️','📎','📊','🗂️','🏢'],
+'イベント': ['🎉','🎁','🎂','💐','🥂','🎄','👶','💒','🏆','🎗️'],
+'その他': ['⭐','❤️','🌸','🌈','🍀','🔥','✨','🌙','🐾','📌','🏦','📈','🌟','🎀','🌺'],
+};
+
+var emojiPickerTarget = null; // 'expense' or 'income'
+var selectedEmojis = { expense: '📌', income: '📌' };
+
+function openEmojiPicker(type) {
+emojiPickerTarget = type;
+var content = document.getElementById('emojiPickerContent');
+content.innerHTML = '';
+Object.keys(EMOJI_CATEGORIES).forEach(function(catName) {
+var label = document.createElement('div');
+label.className = 'emoji-category-label';
+label.textContent = catName;
+content.appendChild(label);
+
+var grid = document.createElement('div');
+grid.className = 'emoji-grid';
+EMOJI_CATEGORIES[catName].forEach(function(emoji) {
+var btn = document.createElement('button');
+btn.className = 'emoji-option';
+btn.textContent = emoji;
+btn.onclick = function() { selectEmoji(emoji); };
+grid.appendChild(btn);
+});
+content.appendChild(grid);
+});
+document.getElementById('emojiOverlay').classList.add('open');
+document.getElementById('emojiPickerPopup').classList.add('open');
+}
+
+function closeEmojiPicker() {
+document.getElementById('emojiOverlay').classList.remove('open');
+document.getElementById('emojiPickerPopup').classList.remove('open');
+emojiPickerTarget = null;
+}
+
+function selectEmoji(emoji) {
+if (emojiPickerTarget) {
+selectedEmojis[emojiPickerTarget] = emoji;
+document.getElementById(emojiPickerTarget + 'EmojiBtn').textContent = emoji;
+}
+closeEmojiPicker();
+}
+
+
 // ===== STATE =====
 const today = new Date();
 let currentYear = today.getFullYear();
 let currentMonth = today.getMonth();
 let selectedDate = null;
 let currentEntryType = 'expense';
-let calendarSelectedDate = null; // for day-summary highlight
+let calendarSelectedDate = null;
 
 function storageKey(type) {
 return 'kakeibo_' + type;
@@ -1142,13 +1337,28 @@ function save(key, val) {
 localStorage.setItem(storageKey(key), JSON.stringify(val));
 }
 
+// ===== CUSTOM ICON STORAGE =====
+function getCustomIcons() {
+return load('custom_icons', {});
+}
+
+function saveCustomIcon(catName, emoji) {
+var icons = getCustomIcons();
+icons[catName] = emoji;
+save('custom_icons', icons);
+}
+
 const CAT_ICONS = {
 '食費':'🛒','交通費':'🚃','日用品':'🧴','光熱費':'💡','娯楽':'🎮','医療':'💊',
 '外食':'🍜','その他':'📦','カフェ':'☕','美容':'💄','衣類':'👗','教育':'📚',
 '通信費':'📱','保険':'🏥','家賃':'🏠','旅行':'✈️','ペット':'🐾','贈り物':'🎁',
 '給与':'💴','副業':'💻','その他収入':'🌟','ボーナス':'🎉','投資':'📈','年金':'🏦',
 };
+
 function getIcon(name) {
+// カスタムアイコンを最優先
+var customs = getCustomIcons();
+if (customs[name]) return customs[name];
 if (CAT_ICONS[name]) return CAT_ICONS[name];
 if (name.includes('食')) return '🍽️';
 if (name.includes('交通')||name.includes('電車')||name.includes('バス')) return '🚃';
@@ -1225,6 +1435,7 @@ if (currentMonth > 11) { currentMonth = 0; currentYear++; }
 if (currentMonth < 0) { currentMonth = 11; currentYear--; }
 calendarSelectedDate = null;
 closeDaySummary();
+applyMonthTheme(currentMonth);
 renderCalendar();
 updateSummary();
 updateSettingsPage();
@@ -1241,6 +1452,14 @@ if (tab === 'graph') renderGraphs();
 if (tab === 'settings') updateSettingsPage();
 if (tab === 'input') renderInputPage();
 if (tab === 'budget') renderBudgetPage();
+}
+
+// ★ 機能追加: カレンダーから直接入力画面へ遷移
+function goToInputFromCalendar(dateString) {
+selectedDate = dateString;
+// タブの切り替え
+var inputTabBtn = document.querySelectorAll('.tab')[1]; // 入力タブ
+switchTab('input', inputTabBtn);
 }
 
 // ===== CALENDAR =====
@@ -1285,7 +1504,6 @@ const dow = new Date(cell.year, cell.month, cell.day).getDay();
 if (dow === 0) div.classList.add('sunday');
 if (dow === 6) div.classList.add('saturday');
 
-// 変更1: フル金額表示（k表記をやめる）
 var incomeHtml = '';
 if (totalIncome > 0) {
 incomeHtml = '<div class="day-income">+' + totalIncome.toLocaleString() + '</div>';
@@ -1298,12 +1516,12 @@ expenseHtml = '<div class="day-expense">-' + totalExpense.toLocaleString() + '</
 div.innerHTML = '<div class="day-num">' + cell.day + '</div>' +
 '<div class="day-amounts">' + incomeHtml + expenseHtml + '</div>';
 
+// ★ 変更: タップで入力画面へ遷移
 div.onclick = (function(dateString) {
 return function() {
-// 変更2: タップで日別サマリーを表示
 calendarSelectedDate = dateString;
-showDaySummary(dateString);
 renderCalendar();
+goToInputFromCalendar(dateString);
 };
 })(ds);
 
@@ -1311,7 +1529,7 @@ grid.appendChild(div);
 });
 }
 
-// 変更2: 日別サマリーバナー表示
+// 日別サマリーバナー表示（入力画面遷移前に表示しない）
 function showDaySummary(ds) {
 const entries = getEntries(ds);
 const totalIncome = entries.filter(function(e) { return e.type === 'income'; }).reduce(function(s, e) { return s + e.amount; }, 0);
@@ -1440,7 +1658,7 @@ document.getElementById('memoInput').value = '';
 renderEntryList();
 renderCalendar();
 updateSummary();
-showToast('記録しました');
+showToast('記録しました ✨');
 }
 
 function deleteEntry(index) {
@@ -1590,6 +1808,7 @@ el.appendChild(div);
 });
 }
 
+// ★ 変更: カスタム絵文字付きでカテゴリ追加
 function addCategory(type) {
 const inputId = type === 'expense' ? 'newExpenseCat' : 'newIncomeCat';
 const val = document.getElementById(inputId).value.trim();
@@ -1597,9 +1816,20 @@ if (!val) { showToast('カテゴリ名を入力してください'); return; }
 const cats = getCats(currentYear, currentMonth);
 cats[type].push(val);
 saveCats(currentYear, currentMonth, cats);
+
+// カスタム絵文字を保存
+var emoji = selectedEmojis[type];
+if (emoji && emoji !== '📌') {
+saveCustomIcon(val, emoji);
+}
+
 document.getElementById(inputId).value = '';
+// 絵文字ボタンをリセット
+selectedEmojis[type] = '📌';
+document.getElementById(type + 'EmojiBtn').textContent = '📌';
+
 renderCategoryLists();
-showToast('カテゴリを追加しました');
+showToast('カテゴリを追加しました ✨');
 }
 
 function deleteCategory(type, index) {
@@ -1699,7 +1929,6 @@ const catSpent = catUsed[cat] || 0;
 const pct = catBudget > 0 ? Math.min(Math.round((catSpent / catBudget) * 100), 100) : 0;
 const over = catBudget > 0 && catSpent > catBudget;
 
-// 変更3: 残額を計算して表示
 const catRemain = catBudget - catSpent;
 var remainHtml = '';
 if (catBudget > 0) {
@@ -1753,7 +1982,7 @@ showToast('予算を保存しました 💾');
 function exportData() {
 try {
 var backupData = {};
-var keys = ['kakeibo_entries', 'kakeibo_categories', 'kakeibo_budgets'];
+var keys = ['kakeibo_entries', 'kakeibo_categories', 'kakeibo_budgets', 'kakeibo_custom_icons'];
 keys.forEach(function(key) {
 var val = localStorage.getItem(key);
 if (val) backupData[key] = JSON.parse(val);
@@ -1785,7 +2014,7 @@ var reader = new FileReader();
 reader.onload = function(e) {
 try {
 var data = JSON.parse(e.target.result);
-var keys = ['kakeibo_entries', 'kakeibo_categories', 'kakeibo_budgets'];
+var keys = ['kakeibo_entries', 'kakeibo_categories', 'kakeibo_budgets', 'kakeibo_custom_icons'];
 var restored = 0;
 keys.forEach(function(key) {
 if (data[key]) {
@@ -1810,6 +2039,7 @@ event.target.value = '';
 }
 
 // ===== INIT =====
+applyMonthTheme(currentMonth);
 renderCalendar();
 updateSummary();
 selectedDate = dateStr(today.getFullYear(), today.getMonth(), today.getDate());
