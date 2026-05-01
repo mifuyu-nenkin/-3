@@ -51,7 +51,6 @@ padding: 14px 16px 12px;
 position: sticky;
 top: 0;
 z-index: 100;
-transition: background 0.5s ease;
 }
 
 .month-nav {
@@ -167,51 +166,6 @@ font-family: 'Zen Kaku Gothic New', sans-serif;
 .summary-value.expense { color: var(--expense); }
 .summary-value.total { color: var(--text); }
 
-/* ===== DAY SUMMARY BANNER ===== */
-.day-summary-banner {
-display: none;
-background: linear-gradient(135deg, #FFF8FA, #FFF0E6);
-border-bottom: 1px solid var(--border);
-padding: 10px 16px;
-align-items: center;
-gap: 8px;
-animation: fadeIn 0.2s ease;
-}
-
-.day-summary-banner.show { display: flex; }
-
-@keyframes fadeIn {
-from { opacity: 0; transform: translateY(-4px); }
-to { opacity: 1; transform: translateY(0); }
-}
-
-.day-summary-date {
-font-size: 13px;
-font-weight: 700;
-color: var(--primary);
-white-space: nowrap;
-}
-
-.day-summary-amounts {
-display: flex;
-gap: 12px;
-flex: 1;
-justify-content: flex-end;
-font-family: 'Zen Kaku Gothic New', sans-serif;
-font-size: 13px;
-font-weight: 700;
-}
-
-.day-summary-close {
-background: none;
-border: none;
-color: var(--text-muted);
-font-size: 16px;
-cursor: pointer;
-padding: 0 2px;
-line-height: 1;
-}
-
 .calendar-grid {
 padding: 0;
 }
@@ -252,7 +206,6 @@ position: relative;
 .day-cell:hover { background: #FFF3EA; }
 .day-cell.other-month { background: #FAFAFA; }
 .day-cell.today { background: #FFF0E6; }
-.day-cell.selected { background: #FFE8D6; outline: 2px solid var(--primary); outline-offset: -2px; }
 .day-cell.today .day-num { 
 background: var(--primary); 
 color: white; 
@@ -369,6 +322,9 @@ border-radius: 10px;
 
 .card-income { border-left: 4px solid var(--income); }
 .card-expense { border-left: 4px solid var(--expense); }
+
+/* remove old badge styles since replaced */
+
 
 .entry-category {
 flex: 1;
@@ -587,7 +543,6 @@ line-height: 1;
 display: flex;
 gap: 8px;
 margin-top: 4px;
-align-items: center;
 }
 
 .add-category-row input[type="text"] {
@@ -627,101 +582,6 @@ border-radius: 8px;
 padding: 8px 12px;
 border-left: 3px solid var(--primary);
 }
-
-/* ===== EMOJI PICKER ===== */
-.emoji-btn {
-width: 40px;
-height: 40px;
-border: 1px solid var(--border);
-border-radius: 8px;
-background: var(--white);
-font-size: 20px;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
-transition: border-color 0.2s, transform 0.15s;
-}
-.emoji-btn:hover { border-color: var(--primary); transform: scale(1.08); }
-
-.emoji-picker-popup {
-display: none;
-position: fixed;
-bottom: 0;
-left: 50%;
-transform: translateX(-50%);
-width: 100%;
-max-width: 430px;
-background: var(--white);
-border-radius: 20px 20px 0 0;
-box-shadow: 0 -8px 30px rgba(0,0,0,0.15);
-z-index: 250;
-padding: 16px 12px 24px;
-animation: slideUp 0.25s ease;
-}
-.emoji-picker-popup.open { display: block; }
-
-.emoji-picker-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 12px;
-padding: 0 4px;
-}
-.emoji-picker-title {
-font-size: 15px;
-font-weight: 700;
-color: var(--text);
-}
-.emoji-picker-close {
-background: #EEE;
-border: none;
-width: 30px;
-height: 30px;
-border-radius: 50%;
-font-size: 16px;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
-.emoji-category-label {
-font-size: 11px;
-font-weight: 700;
-color: var(--text-muted);
-margin: 8px 0 4px 4px;
-}
-
-.emoji-grid {
-display: grid;
-grid-template-columns: repeat(8, 1fr);
-gap: 4px;
-max-height: 220px;
-overflow-y: auto;
-}
-
-.emoji-option {
-font-size: 22px;
-padding: 6px;
-border: none;
-background: none;
-cursor: pointer;
-border-radius: 8px;
-transition: background 0.15s, transform 0.1s;
-text-align: center;
-}
-.emoji-option:hover { background: var(--bg); transform: scale(1.15); }
-
-.emoji-picker-overlay {
-display: none;
-position: fixed;
-inset: 0;
-background: rgba(0,0,0,0.3);
-z-index: 240;
-}
-.emoji-picker-overlay.open { display: block; }
 
 /* ===== MODAL ===== */
 .modal-overlay {
@@ -830,23 +690,19 @@ align-items: center;
 .budget-total-value { font-size: 16px; font-weight: 700; font-family: 'Zen Kaku Gothic New', sans-serif; }
 
 .budget-bar-wrap { margin-top: 8px; }
-
 .budget-bar-bg {
 background: #EEE;
 border-radius: 20px;
 height: 12px;
 overflow: hidden;
 }
-
 .budget-bar-fill {
 height: 100%;
 border-radius: 20px;
 background: var(--income);
 transition: width 0.4s ease;
 }
-
 .budget-bar-fill.over { background: var(--expense); }
-
 .budget-bar-pct {
 font-size: 12px;
 color: var(--text-muted);
@@ -881,7 +737,6 @@ transition: border-color 0.2s;
 }
 
 .budget-input-row input:focus { border-color: var(--primary); }
-
 .yen-label { font-size: 15px; font-weight: 700; color: var(--text-muted); }
 
 .budget-cat-list {
@@ -889,6 +744,18 @@ display: flex;
 flex-direction: column;
 gap: 10px;
 }
+
+.day-nav-btn {
+background: none;
+border: none;
+color: var(--primary);
+font-size: 18px;
+cursor: pointer;
+padding: 4px 8px;
+border-radius: 8px;
+transition: background 0.15s;
+}
+.day-nav-btn:hover { background: #FFE8EF; }
 
 .budget-cat-item {
 background: var(--bg);
@@ -898,7 +765,30 @@ padding: 12px 14px;
 display: flex;
 flex-direction: column;
 gap: 8px;
+cursor: pointer;
+transition: background 0.15s;
 }
+.budget-cat-item:active { background: #FFE8EF; }
+
+.cat-detail-item {
+background: var(--bg);
+border: 1px solid var(--border);
+border-radius: 10px;
+padding: 10px 12px;
+display: flex;
+align-items: flex-start;
+gap: 10px;
+}
+.cat-detail-date {
+font-size: 12px;
+color: var(--text-muted);
+white-space: nowrap;
+padding-top: 2px;
+}
+.cat-detail-info { flex: 1; }
+.cat-detail-cat { font-size: 13px; font-weight: 500; }
+.cat-detail-memo { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.cat-detail-amount { font-size: 15px; font-weight: 700; color: var(--expense); font-family: 'Zen Kaku Gothic New', sans-serif; white-space: nowrap; }
 
 .budget-cat-header {
 display: flex;
@@ -955,15 +845,6 @@ transition: width 0.4s ease;
 
 .budget-cat-bar-fill.over { background: var(--expense); }
 
-.budget-cat-remain {
-font-size: 12px;
-font-weight: 700;
-font-family: 'Zen Kaku Gothic New', sans-serif;
-}
-
-.budget-cat-remain.positive { color: var(--income); }
-.budget-cat-remain.negative { color: var(--expense); }
-
 .budget-save-btn {
 background: var(--primary);
 color: white;
@@ -981,49 +862,6 @@ margin-top: 4px;
 
 .budget-save-btn:hover { opacity: 0.88; }
 
-/* ===== BACKUP/RESTORE ===== */
-.backup-section {
-margin-top: 8px;
-padding-top: 16px;
-border-top: 2px solid var(--border);
-}
-
-.backup-btn {
-width: 100%;
-padding: 14px;
-border: none;
-border-radius: 12px;
-font-size: 15px;
-font-weight: 700;
-font-family: 'Noto Sans JP', sans-serif;
-cursor: pointer;
-transition: opacity 0.2s;
-}
-
-.backup-btn:hover { opacity: 0.88; }
-
-.backup-export {
-background: var(--income);
-color: white;
-margin-bottom: 10px;
-}
-
-.backup-import {
-background: var(--primary);
-color: white;
-margin-bottom: 10px;
-}
-
-.backup-note {
-font-size: 11px;
-color: var(--text-muted);
-background: #FFF3EA;
-border-radius: 8px;
-padding: 10px 12px;
-border-left: 3px solid var(--primary);
-line-height: 1.7;
-}
-
 /* scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
@@ -1035,9 +873,9 @@ line-height: 1.7;
 <!-- HEADER -->
 <div class="header">
 <div class="month-nav">
-<button onclick="changeMonth(-1)">&#9664;</button>
+<button onclick="changeMonth(-1)">◀</button>
 <div class="month-title" id="monthTitle"></div>
-<button onclick="changeMonth(1)">&#9654;</button>
+<button onclick="changeMonth(1)">▶</button>
 </div>
 </div>
 
@@ -1081,12 +919,6 @@ line-height: 1.7;
 <div class="summary-value total" id="sumTotal">0円</div>
 </div>
 </div>
-<!-- DAY SUMMARY BANNER -->
-<div class="day-summary-banner" id="daySummaryBanner">
-<span class="day-summary-date" id="daySummaryDate"></span>
-<div class="day-summary-amounts" id="daySummaryAmounts"></div>
-<button class="day-summary-close" onclick="closeDaySummary()">×</button>
-</div>
 <div class="calendar-grid">
 <div class="weekday-header">
 <span>日</span><span>月</span><span>火</span>
@@ -1100,7 +932,11 @@ line-height: 1.7;
 <div class="page" id="page-input">
 <div class="input-page-content">
 <div class="selected-date-header">
+<button class="day-nav-btn" onclick="moveDay(-1)">◀</button>
 <span id="inputDateLabel">日付を選択してください</span>
+<button class="day-nav-btn" onclick="moveDay(1)">▶</button>
+</div>
+<div style="display:flex;justify-content:flex-end;margin-top:-6px">
 <button class="copy-btn" onclick="copyPrevDay()">前日コピー</button>
 </div>
 <div class="entry-list" id="entryList"></div>
@@ -1153,7 +989,6 @@ line-height: 1.7;
 <div style="height:10px"></div>
 <div class="category-list" id="expenseCategoryList"></div>
 <div class="add-category-row" style="margin-top:8px">
-<button class="emoji-btn" id="expenseEmojiBtn" onclick="openEmojiPicker('expense')" title="絵文字を選ぶ">📌</button>
 <input type="text" id="newExpenseCat" placeholder="新しいカテゴリ名">
 <button onclick="addCategory('expense')">追加</button>
 </div>
@@ -1162,23 +997,14 @@ line-height: 1.7;
 <div class="settings-section-title">収入カテゴリ</div>
 <div class="category-list" id="incomeCategoryList"></div>
 <div class="add-category-row" style="margin-top:8px">
-<button class="emoji-btn" id="incomeEmojiBtn" onclick="openEmojiPicker('income')" title="絵文字を選ぶ">📌</button>
 <input type="text" id="newIncomeCat" placeholder="新しいカテゴリ名">
 <button onclick="addCategory('income')">追加</button>
 </div>
 </div>
-<div class="backup-section">
-<div class="settings-section-title">📦 データ管理</div>
-<button class="backup-btn backup-export" onclick="exportData()">📤 バックアップを保存する</button>
-<button class="backup-btn backup-import" onclick="document.getElementById('importFile').click()">📥 バックアップから復元する</button>
-<input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
-<div class="backup-note">
-⚠️ アプリ更新やホーム画面アイコンを再追加する前に、必ずバックアップを保存してください。<br>
-バックアップファイルはiPhoneの「ファイル」アプリに保存されます。
 </div>
 </div>
-</div>
-</div>
+
+<!-- BUDGET PAGE -->
 <div class="page" id="page-budget">
 <div class="budget-content">
 <div class="budget-month-label" id="budgetMonthLabel"></div>
@@ -1221,109 +1047,48 @@ line-height: 1.7;
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- EMOJI PICKER -->
-<div class="emoji-picker-overlay" id="emojiOverlay" onclick="closeEmojiPicker()"></div>
-<div class="emoji-picker-popup" id="emojiPickerPopup">
-<div class="emoji-picker-header">
-<span class="emoji-picker-title">絵文字を選ぶ</span>
-<button class="emoji-picker-close" onclick="closeEmojiPicker()">✕</button>
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+<div class="modal">
+<div class="modal-header">
+<div class="modal-title">✏️ 明細を修正</div>
+<button class="modal-close" onclick="closeEditModal()">×</button>
 </div>
-<div id="emojiPickerContent"></div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div class="type-toggle">
+<button class="type-btn" id="editTypeExpenseBtn" onclick="setEditType('expense')">支出</button>
+<button class="type-btn" id="editTypeIncomeBtn" onclick="setEditType('income')">収入</button>
+</div>
+<select id="editCategorySelect" style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:'Noto Sans JP',sans-serif;background:white;outline:none;width:100%"></select>
+<input type="number" id="editAmountInput" placeholder="金額" min="0" style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:'Noto Sans JP',sans-serif;outline:none;width:100%">
+<textarea id="editMemoInput" placeholder="✏️ メモ" maxlength="100" rows="3" style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;font-family:'Noto Sans JP',sans-serif;outline:none;resize:none;width:100%;line-height:1.6;"></textarea>
+<button class="add-btn" onclick="saveEdit()">💾 保存する</button>
+</div>
+</div>
+</div>
+
+<!-- CATEGORY DETAIL MODAL -->
+<div class="modal-overlay" id="catDetailModal">
+<div class="modal">
+<div class="modal-header">
+<div class="modal-title" id="catDetailTitle"></div>
+<button class="modal-close" onclick="document.getElementById('catDetailModal').classList.remove('open')">×</button>
+</div>
+<div id="catDetailList" style="display:flex;flex-direction:column;gap:8px;max-height:60vh;overflow-y:auto"></div>
+</div>
 </div>
 
 <script>
-// ===== MONTHLY PASTEL THEMES =====
-var MONTH_THEMES = [
-{ primary: '#E8789A', light: '#F2A8BC', dark: '#C45578', bg: '#FDF5F7', border: '#F0DDE4' }, // 1月 ピンク
-{ primary: '#B088D0', light: '#D0B8E8', dark: '#8A60B0', bg: '#F8F3FC', border: '#E8D8F0' }, // 2月 ラベンダー
-{ primary: '#F0A0B8', light: '#F8C8D8', dark: '#D87898', bg: '#FFF5F8', border: '#F5D8E2' }, // 3月 桜ピンク
-{ primary: '#7EC8A0', light: '#A8E0C0', dark: '#58A878', bg: '#F3FBF5', border: '#D0EAD8' }, // 4月 若草
-{ primary: '#70B8D8', light: '#A0D8F0', dark: '#4890B0', bg: '#F2F8FC', border: '#C8E0F0' }, // 5月 空色
-{ primary: '#9098D8', light: '#B8C0F0', dark: '#6870B0', bg: '#F5F5FC', border: '#D0D4F0' }, // 6月 紫陽花
-{ primary: '#F0B870', light: '#F8D8A0', dark: '#D09848', bg: '#FFFBF2', border: '#F0E0C0' }, // 7月 向日葵
-{ primary: '#E88870', light: '#F0B0A0', dark: '#C86850', bg: '#FEF5F3', border: '#F0D8D0' }, // 8月 珊瑚
-{ primary: '#D8A070', light: '#E8C8A0', dark: '#B87848', bg: '#FBF7F2', border: '#E8D8C0' }, // 9月 秋茶
-{ primary: '#E0A090', light: '#F0C8B8', dark: '#C07868', bg: '#FDF6F3', border: '#F0D8D0' }, // 10月 紅葉
-{ primary: '#C8A0B0', light: '#E0C0D0', dark: '#A07888', bg: '#FAF5F7', border: '#E8D0D8' }, // 11月 葡萄
-{ primary: '#80B8C0', light: '#A8D8E0', dark: '#5898A0', bg: '#F3FAFB', border: '#C8E0E4' }, // 12月 冬空
-];
-
-function applyMonthTheme(month) {
-var theme = MONTH_THEMES[month];
-var root = document.documentElement;
-root.style.setProperty('--primary', theme.primary);
-root.style.setProperty('--primary-light', theme.light);
-root.style.setProperty('--primary-dark', theme.dark);
-root.style.setProperty('--bg', theme.bg);
-root.style.setProperty('--border', theme.border);
-}
-
-// ===== EMOJI PICKER DATA =====
-var EMOJI_CATEGORIES = {
-'お金・買い物': ['🛒','💰','💴','💵','💳','🧾','🪙','💸','🏧','🛍️'],
-'食べ物': ['🍽️','🍜','🍣','🍙','🍕','🍔','🥗','🍰','☕','🍺','🧁','🍳','🥐','🍱','🍦'],
-'交通': ['🚃','🚗','🚌','🚲','✈️','🚄','⛽','🛵','🚶','🏃'],
-'住まい・生活': ['🏠','💡','🧴','🚿','🧹','🗑️','🛏️','🔑','📦','🧺'],
-'健康・美容': ['💊','🏥','💄','💇','🏋️','🧘','🩺','🦷','👓','🩹'],
-'趣味・娯楽': ['🎮','🎬','🎵','📚','🎨','🎯','⚽','🏖️','🎤','🎲'],
-'仕事・学校': ['💻','📱','📝','🎓','💼','🖥️','📎','📊','🗂️','🏢'],
-'イベント': ['🎉','🎁','🎂','💐','🥂','🎄','👶','💒','🏆','🎗️'],
-'その他': ['⭐','❤️','🌸','🌈','🍀','🔥','✨','🌙','🐾','📌','🏦','📈','🌟','🎀','🌺'],
-};
-
-var emojiPickerTarget = null; // 'expense' or 'income'
-var selectedEmojis = { expense: '📌', income: '📌' };
-
-function openEmojiPicker(type) {
-emojiPickerTarget = type;
-var content = document.getElementById('emojiPickerContent');
-content.innerHTML = '';
-Object.keys(EMOJI_CATEGORIES).forEach(function(catName) {
-var label = document.createElement('div');
-label.className = 'emoji-category-label';
-label.textContent = catName;
-content.appendChild(label);
-
-var grid = document.createElement('div');
-grid.className = 'emoji-grid';
-EMOJI_CATEGORIES[catName].forEach(function(emoji) {
-var btn = document.createElement('button');
-btn.className = 'emoji-option';
-btn.textContent = emoji;
-btn.onclick = function() { selectEmoji(emoji); };
-grid.appendChild(btn);
-});
-content.appendChild(grid);
-});
-document.getElementById('emojiOverlay').classList.add('open');
-document.getElementById('emojiPickerPopup').classList.add('open');
-}
-
-function closeEmojiPicker() {
-document.getElementById('emojiOverlay').classList.remove('open');
-document.getElementById('emojiPickerPopup').classList.remove('open');
-emojiPickerTarget = null;
-}
-
-function selectEmoji(emoji) {
-if (emojiPickerTarget) {
-selectedEmojis[emojiPickerTarget] = emoji;
-document.getElementById(emojiPickerTarget + 'EmojiBtn').textContent = emoji;
-}
-closeEmojiPicker();
-}
-
-
 // ===== STATE =====
 const today = new Date();
 let currentYear = today.getFullYear();
-let currentMonth = today.getMonth();
-let selectedDate = null;
+let currentMonth = today.getMonth(); // 0-based
+let selectedDate = null; // "YYYY-MM-DD"
 let currentEntryType = 'expense';
-let calendarSelectedDate = null;
 
+// Storage helpers
 function storageKey(type) {
-return 'kakeibo_' + type;
+return `kakeibo_${type}`;
 }
 
 function load(key, def) {
@@ -1337,28 +1102,17 @@ function save(key, val) {
 localStorage.setItem(storageKey(key), JSON.stringify(val));
 }
 
-// ===== CUSTOM ICON STORAGE =====
-function getCustomIcons() {
-return load('custom_icons', {});
-}
+// Data: entries[dateStr] = [{type, category, amount}]
+// Categories per month: cats[monthKey] = {expense:[], income:[]}
 
-function saveCustomIcon(catName, emoji) {
-var icons = getCustomIcons();
-icons[catName] = emoji;
-save('custom_icons', icons);
-}
-
+// Category icons map
 const CAT_ICONS = {
 '食費':'🛒','交通費':'🚃','日用品':'🧴','光熱費':'💡','娯楽':'🎮','医療':'💊',
 '外食':'🍜','その他':'📦','カフェ':'☕','美容':'💄','衣類':'👗','教育':'📚',
 '通信費':'📱','保険':'🏥','家賃':'🏠','旅行':'✈️','ペット':'🐾','贈り物':'🎁',
 '給与':'💴','副業':'💻','その他収入':'🌟','ボーナス':'🎉','投資':'📈','年金':'🏦',
 };
-
 function getIcon(name) {
-// カスタムアイコンを最優先
-var customs = getCustomIcons();
-if (customs[name]) return customs[name];
 if (CAT_ICONS[name]) return CAT_ICONS[name];
 if (name.includes('食')) return '🍽️';
 if (name.includes('交通')||name.includes('電車')||name.includes('バス')) return '🚃';
@@ -1389,13 +1143,14 @@ const DEFAULT_EXPENSE_CATS = ['食費','交通費','日用品','光熱費','娯�
 const DEFAULT_INCOME_CATS = ['給与','副業','その他収入'];
 
 function getMonthKey(y, m) {
-return y + '-' + String(m+1).padStart(2,'0');
+return `${y}-${String(m+1).padStart(2,'0')}`;
 }
 
 function getCats(y, m) {
 const mk = getMonthKey(y, m);
 const all = load('categories', {});
 if (!all[mk]) {
+// copy from previous month or use default
 all[mk] = { expense: [...DEFAULT_EXPENSE_CATS], income: [...DEFAULT_INCOME_CATS] };
 save('categories', all);
 }
@@ -1425,7 +1180,7 @@ return n.toLocaleString('ja-JP') + '円';
 }
 
 function dateStr(y, m, d) {
-return y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
 }
 
 // ===== NAVIGATION =====
@@ -1433,19 +1188,17 @@ function changeMonth(delta) {
 currentMonth += delta;
 if (currentMonth > 11) { currentMonth = 0; currentYear++; }
 if (currentMonth < 0) { currentMonth = 11; currentYear--; }
-calendarSelectedDate = null;
-closeDaySummary();
-applyMonthTheme(currentMonth);
 renderCalendar();
 updateSummary();
 updateSettingsPage();
+// re-render whichever page is currently visible
 if (document.getElementById('page-budget').classList.contains('active')) renderBudgetPage();
 if (document.getElementById('page-graph').classList.contains('active')) renderGraphs();
 }
 
 function switchTab(tab, btn) {
-document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
-document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 btn.classList.add('active');
 document.getElementById('page-' + tab).classList.add('active');
 if (tab === 'graph') renderGraphs();
@@ -1454,18 +1207,10 @@ if (tab === 'input') renderInputPage();
 if (tab === 'budget') renderBudgetPage();
 }
 
-// ★ 機能追加: カレンダーから直接入力画面へ遷移
-function goToInputFromCalendar(dateString) {
-selectedDate = dateString;
-// タブの切り替え
-var inputTabBtn = document.querySelectorAll('.tab')[1]; // 入力タブ
-switchTab('input', inputTabBtn);
-}
-
 // ===== CALENDAR =====
 function renderCalendar() {
 const y = currentYear, m = currentMonth;
-document.getElementById('monthTitle').textContent = y + '年' + String(m+1).padStart(2,'0') + '月';
+document.getElementById('monthTitle').textContent = `${y}年${String(m+1).padStart(2,'0')}月`;
 
 const firstDay = new Date(y, m, 1).getDay();
 const daysInMonth = new Date(y, m+1, 0).getDate();
@@ -1477,92 +1222,49 @@ grid.innerHTML = '';
 const todayStr = dateStr(today.getFullYear(), today.getMonth(), today.getDate());
 
 let cells = [];
+// prev month padding
 for (let i = firstDay - 1; i >= 0; i--) {
 cells.push({ day: daysInPrevMonth - i, month: m-1, year: m === 0 ? y-1 : y, other: true });
 }
 for (let d = 1; d <= daysInMonth; d++) {
 cells.push({ day: d, month: m, year: y, other: false });
 }
+// next month padding
 const remaining = 42 - cells.length;
 for (let d = 1; d <= remaining; d++) {
 cells.push({ day: d, month: m+1, year: m === 11 ? y+1 : y, other: true });
 }
 
-cells.forEach(function(cell) {
+cells.forEach(cell => {
 const ds = dateStr(cell.year, cell.month, cell.day);
 const entries = getEntries(ds);
-const totalIncome = entries.filter(function(e) { return e.type === 'income'; }).reduce(function(s, e) { return s + e.amount; }, 0);
-const totalExpense = entries.filter(function(e) { return e.type === 'expense'; }).reduce(function(s, e) { return s + e.amount; }, 0);
+const totalIncome = entries.filter(e => e.type === 'income').reduce((s, e) => s + e.amount, 0);
+const totalExpense = entries.filter(e => e.type === 'expense').reduce((s, e) => s + e.amount, 0);
 
 const div = document.createElement('div');
 div.className = 'day-cell';
 if (cell.other) div.classList.add('other-month');
 if (ds === todayStr) div.classList.add('today');
-if (ds === calendarSelectedDate) div.classList.add('selected');
 
 const dow = new Date(cell.year, cell.month, cell.day).getDay();
 if (dow === 0) div.classList.add('sunday');
 if (dow === 6) div.classList.add('saturday');
 
-var incomeHtml = '';
-if (totalIncome > 0) {
-incomeHtml = '<div class="day-income">+' + totalIncome.toLocaleString() + '</div>';
-}
-var expenseHtml = '';
-if (totalExpense > 0) {
-expenseHtml = '<div class="day-expense">-' + totalExpense.toLocaleString() + '</div>';
-}
+div.innerHTML = `
+<div class="day-num">${cell.day}</div>
+<div class="day-amounts">
+${totalIncome > 0 ? `<div class="day-income">+${totalIncome >= 10000 ? Math.round(totalIncome/1000)+'k' : totalIncome.toLocaleString()}</div>` : ''}
+${totalExpense > 0 ? `<div class="day-expense">-${totalExpense >= 10000 ? Math.round(totalExpense/1000)+'k' : totalExpense.toLocaleString()}</div>` : ''}
+</div>`;
 
-div.innerHTML = '<div class="day-num">' + cell.day + '</div>' +
-'<div class="day-amounts">' + incomeHtml + expenseHtml + '</div>';
-
-// ★ 変更: タップで入力画面へ遷移
-div.onclick = (function(dateString) {
-return function() {
-calendarSelectedDate = dateString;
-renderCalendar();
-goToInputFromCalendar(dateString);
+div.onclick = () => {
+selectedDate = ds;
+switchTab('input', document.querySelectorAll('.tab')[1]);
+renderInputPage();
 };
-})(ds);
 
 grid.appendChild(div);
 });
-}
-
-// 日別サマリーバナー表示（入力画面遷移前に表示しない）
-function showDaySummary(ds) {
-const entries = getEntries(ds);
-const totalIncome = entries.filter(function(e) { return e.type === 'income'; }).reduce(function(s, e) { return s + e.amount; }, 0);
-const totalExpense = entries.filter(function(e) { return e.type === 'expense'; }).reduce(function(s, e) { return s + e.amount; }, 0);
-
-const parts = ds.split('-');
-const y = parseInt(parts[0]);
-const mo = parseInt(parts[1]);
-const d = parseInt(parts[2]);
-const dateObj = new Date(y, mo-1, d);
-const dows = ['日','月','火','水','木','金','土'];
-
-document.getElementById('daySummaryDate').textContent = mo + '/' + d + '（' + dows[dateObj.getDay()] + '）';
-
-var amountsHtml = '';
-if (totalIncome > 0) {
-amountsHtml += '<span style="color:var(--income)">+' + formatYen(totalIncome) + '</span>';
-}
-if (totalExpense > 0) {
-amountsHtml += '<span style="color:var(--expense)">-' + formatYen(totalExpense) + '</span>';
-}
-if (totalIncome === 0 && totalExpense === 0) {
-amountsHtml = '<span style="color:var(--text-muted)">記録なし</span>';
-}
-
-document.getElementById('daySummaryAmounts').innerHTML = amountsHtml;
-document.getElementById('daySummaryBanner').classList.add('show');
-}
-
-function closeDaySummary() {
-document.getElementById('daySummaryBanner').classList.remove('show');
-calendarSelectedDate = null;
-renderCalendar();
 }
 
 function updateSummary() {
@@ -1571,7 +1273,7 @@ const daysInMonth = new Date(y, m+1, 0).getDate();
 let totalIn = 0, totalEx = 0;
 for (let d = 1; d <= daysInMonth; d++) {
 const entries = getEntries(dateStr(y, m, d));
-entries.forEach(function(e) {
+entries.forEach(e => {
 if (e.type === 'income') totalIn += e.amount;
 else totalEx += e.amount;
 });
@@ -1587,16 +1289,14 @@ totalEl.style.color = net >= 0 ? 'var(--income)' : 'var(--expense)';
 // ===== INPUT PAGE =====
 function renderInputPage() {
 if (!selectedDate) {
+// default to today
 selectedDate = dateStr(today.getFullYear(), today.getMonth(), today.getDate());
 }
-const parts = selectedDate.split('-');
-const y = parseInt(parts[0]);
-const mo = parseInt(parts[1]);
-const d = parseInt(parts[2]);
+const [y, mo, d] = selectedDate.split('-').map(Number);
 const dateObj = new Date(y, mo-1, d);
 const dows = ['日','月','火','水','木','金','土'];
 document.getElementById('inputDateLabel').textContent =
-y + '年' + mo + '月' + d + '日（' + dows[dateObj.getDay()] + '）';
+`${y}年${mo}月${d}日（${dows[dateObj.getDay()]}）`;
 
 renderEntryList();
 updateCategorySelect();
@@ -1610,27 +1310,26 @@ if (entries.length === 0) {
 list.innerHTML = '<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:12px">この日の記録はありません</div>';
 return;
 }
-entries.forEach(function(e, i) {
+entries.forEach((e, i) => {
 const div = document.createElement('div');
 div.className = 'entry-card ' + (e.type === 'income' ? 'card-income' : 'card-expense');
-div.innerHTML =
-'<span class="cat-icon-badge">' + getIcon(e.category) + '</span>' +
-'<span class="entry-category">' + e.category + (e.memo ? '<br><span class="entry-memo">📝 ' + e.memo + '</span>' : '') + '</span>' +
-'<span class="entry-amount ' + e.type + '">' + (e.type === 'income' ? '+' : '-') + formatYen(e.amount) + '</span>' +
-'<button class="entry-delete" onclick="deleteEntry(' + i + ')">×</button>';
+div.innerHTML = `
+<span class="cat-icon-badge">${getIcon(e.category)}</span>
+<span class="entry-category">${e.category}${e.memo ? `<br><span class="entry-memo">📝 ${e.memo}</span>` : ''}</span>
+<span class="entry-amount ${e.type}">${e.type === 'income' ? '+' : '-'}${formatYen(e.amount)}</span>
+<button class="entry-delete" style="color:#C8A0B4;font-size:15px" onclick="openEditModal(${i})">✏️</button>
+<button class="entry-delete" onclick="deleteEntry(${i})">×</button>`;
 list.appendChild(div);
 });
 }
 
 function updateCategorySelect() {
 if (!selectedDate) return;
-const parts = selectedDate.split('-');
-const y = parseInt(parts[0]);
-const mo = parseInt(parts[1]);
+const [y, mo] = selectedDate.split('-').map(Number);
 const cats = getCats(y, mo-1);
 const sel = document.getElementById('categorySelect');
 const list = currentEntryType === 'expense' ? cats.expense : cats.income;
-sel.innerHTML = list.map(function(c) { return '<option value="' + c + '">' + getIcon(c) + ' ' + c + '</option>'; }).join('');
+sel.innerHTML = list.map(c => `<option value="${c}">${getIcon(c)} ${c}</option>`).join('');
 }
 
 function setType(type) {
@@ -1651,14 +1350,14 @@ selectedDate = dateStr(today.getFullYear(), today.getMonth(), today.getDate());
 
 const memo = document.getElementById('memoInput').value.trim();
 const entries = getEntries(selectedDate);
-entries.push({ type: currentEntryType, category: cat, amount: amount, memo: memo });
+entries.push({ type: currentEntryType, category: cat, amount, memo });
 saveEntries(selectedDate, entries);
 document.getElementById('amountInput').value = '';
 document.getElementById('memoInput').value = '';
 renderEntryList();
 renderCalendar();
 updateSummary();
-showToast('記録しました ✨');
+showToast('記録しました');
 }
 
 function deleteEntry(index) {
@@ -1670,24 +1369,127 @@ renderCalendar();
 updateSummary();
 }
 
+function moveDay(delta) {
+if (!selectedDate) return;
+const [y, mo, d] = selectedDate.split('-').map(Number);
+const next = new Date(y, mo-1, d + delta);
+selectedDate = dateStr(next.getFullYear(), next.getMonth(), next.getDate());
+renderInputPage();
+}
+
+// ===== EDIT MODAL =====
+let editIndex = null;
+let editType = 'expense';
+
+function openEditModal(index) {
+const e = getEntries(selectedDate)[index];
+if (!e) return;
+editIndex = index;
+editType = e.type;
+
+const [y, mo] = selectedDate.split('-').map(Number);
+const cats = getCats(y, mo-1);
+
+// set type buttons
+setEditType(e.type);
+
+// populate category select
+const sel = document.getElementById('editCategorySelect');
+const list = e.type === 'expense' ? cats.expense : cats.income;
+sel.innerHTML = list.map(c => `<option value="${c}" ${c===e.category?'selected':''}>${getIcon(c)} ${c}</option>`).join('');
+
+document.getElementById('editAmountInput').value = e.amount;
+document.getElementById('editMemoInput').value = e.memo || '';
+document.getElementById('editModal').classList.add('open');
+}
+
+function setEditType(type) {
+editType = type;
+const [y, mo] = selectedDate.split('-').map(Number);
+const cats = getCats(y, mo-1);
+const list = type === 'expense' ? cats.expense : cats.income;
+const sel = document.getElementById('editCategorySelect');
+const cur = sel.value;
+sel.innerHTML = list.map(c => `<option value="${c}" ${c===cur?'selected':''}>${getIcon(c)} ${c}</option>`).join('');
+document.getElementById('editTypeExpenseBtn').className = 'type-btn' + (type === 'expense' ? ' active-expense' : '');
+document.getElementById('editTypeIncomeBtn').className = 'type-btn' + (type === 'income' ? ' active-income' : '');
+}
+
+function saveEdit() {
+const cat = document.getElementById('editCategorySelect').value;
+const amount = parseInt(document.getElementById('editAmountInput').value);
+if (!amount || amount <= 0) { showToast('金額を入力してください'); return; }
+const memo = document.getElementById('editMemoInput').value.trim();
+const entries = getEntries(selectedDate);
+entries[editIndex] = { type: editType, category: cat, amount, memo };
+saveEntries(selectedDate, entries);
+closeEditModal();
+renderEntryList();
+renderCalendar();
+updateSummary();
+showToast('修正しました ✨');
+}
+
+function closeEditModal() {
+document.getElementById('editModal').classList.remove('open');
+editIndex = null;
+}
+
+// ===== CATEGORY DETAIL MODAL =====
+function openCatDetail(cat) {
+const y = currentYear, m = currentMonth;
+const days = new Date(y, m+1, 0).getDate();
+const dows = ['日','月','火','水','木','金','土'];
+let items = [];
+for (let d = 1; d <= days; d++) {
+const ds = dateStr(y, m, d);
+getEntries(ds).forEach(e => {
+if (e.category === cat && e.type === 'expense') {
+items.push({ date: ds, d, dow: new Date(y, m, d).getDay(), amount: e.amount, memo: e.memo });
+}
+});
+}
+
+document.getElementById('catDetailTitle').textContent = `${getIcon(cat)} ${cat} の明細`;
+const list = document.getElementById('catDetailList');
+list.innerHTML = '';
+
+if (items.length === 0) {
+list.innerHTML = '<div style="color:#AAA;font-size:13px;text-align:center;padding:20px">まだ記録がありません</div>';
+} else {
+const total = items.reduce((s, i) => s + i.amount, 0);
+list.innerHTML = `<div style="font-size:13px;color:var(--text-muted);text-align:right;margin-bottom:4px">合計 <span style="font-size:16px;font-weight:700;color:var(--expense)">${formatYen(total)}</span></div>`;
+items.forEach(item => {
+const div = document.createElement('div');
+div.className = 'cat-detail-item';
+div.innerHTML = `
+<div class="cat-detail-date">${item.d}日（${dows[item.dow]}）</div>
+<div class="cat-detail-info">
+<div class="cat-detail-cat">${getIcon(cat)} ${cat}</div>
+${item.memo ? `<div class="cat-detail-memo">📝 ${item.memo}</div>` : ''}
+</div>
+<div class="cat-detail-amount">-${formatYen(item.amount)}</div>`;
+list.appendChild(div);
+});
+}
+document.getElementById('catDetailModal').classList.add('open');
+}
+
 function copyPrevDay() {
 if (!selectedDate) return;
-const parts = selectedDate.split('-');
-const y = parseInt(parts[0]);
-const mo = parseInt(parts[1]);
-const d = parseInt(parts[2]);
+const [y, mo, d] = selectedDate.split('-').map(Number);
 const prevDate = new Date(y, mo-1, d-1);
 const prevStr = dateStr(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate());
 const prevEntries = getEntries(prevStr);
 if (prevEntries.length === 0) { showToast('前日のデータがありません'); return; }
 
 const current = getEntries(selectedDate);
-const merged = current.concat(prevEntries);
+const merged = [...current, ...prevEntries];
 saveEntries(selectedDate, merged);
 renderEntryList();
 renderCalendar();
 updateSummary();
-showToast('前日から' + prevEntries.length + '件コピーしました');
+showToast(`前日から${prevEntries.length}件コピーしました`);
 }
 
 // ===== GRAPH =====
@@ -1696,14 +1498,14 @@ const PIE_COLORS_INCOME = ['#4CAF86','#5BC8C8','#7BBCE0','#9B8CDE','#C8C860'];
 
 function renderGraphs() {
 const y = currentYear, m = currentMonth;
-document.getElementById('graphMonthLabel').textContent = y + '年' + String(m+1).padStart(2,'0') + '月の収支';
+document.getElementById('graphMonthLabel').textContent = `${y}年${String(m+1).padStart(2,'0')}月の収支`;
 
 const daysInMonth = new Date(y, m+1, 0).getDate();
 const expMap = {}, incMap = {};
 
 for (let d = 1; d <= daysInMonth; d++) {
 const entries = getEntries(dateStr(y, m, d));
-entries.forEach(function(e) {
+entries.forEach(e => {
 if (e.type === 'expense') expMap[e.category] = (expMap[e.category] || 0) + e.amount;
 else incMap[e.category] = (incMap[e.category] || 0) + e.amount;
 });
@@ -1720,8 +1522,8 @@ const legendEl = document.getElementById(legendId);
 ctx.clearRect(0, 0, 240, 240);
 legendEl.innerHTML = '';
 
-const entries = Object.entries(dataMap).filter(function(kv) { return kv[1] > 0; });
-const total = entries.reduce(function(s, kv) { return s + kv[1]; }, 0);
+const entries = Object.entries(dataMap).filter(([,v]) => v > 0);
+const total = entries.reduce((s, [,v]) => s + v, 0);
 
 if (total === 0) {
 ctx.fillStyle = '#EEE';
@@ -1737,8 +1539,7 @@ return;
 }
 
 let startAngle = -Math.PI / 2;
-entries.forEach(function(kv, i) {
-const val = kv[1];
+entries.forEach(([cat, val], i) => {
 const slice = (val / total) * Math.PI * 2;
 const color = colors[i % colors.length];
 ctx.beginPath();
@@ -1753,6 +1554,7 @@ ctx.stroke();
 startAngle += slice;
 });
 
+// center hole
 ctx.beginPath();
 ctx.arc(120, 120, 52, 0, Math.PI * 2);
 ctx.fillStyle = '#fff';
@@ -1762,20 +1564,19 @@ ctx.font = 'bold 13px Zen Kaku Gothic New';
 ctx.textAlign = 'center';
 ctx.fillText('合計', 120, 116);
 ctx.font = 'bold 15px Zen Kaku Gothic New';
-ctx.fillText(formatYen(total), 120, 134);
+ctx.fillText(total >= 10000 ? Math.round(total/1000)+'k円' : formatYen(total), 120, 134);
 
-entries.sort(function(a, b) { return b[1] - a[1]; }).forEach(function(kv, i) {
-const cat = kv[0], val = kv[1];
+entries.sort((a, b) => b[1] - a[1]).forEach(([cat, val], i) => {
 const color = colors[i % colors.length];
 const pct = Math.round((val / total) * 100);
 const item = document.createElement('div');
 item.className = 'legend-item';
-item.innerHTML =
-'<div class="legend-color" style="background:' + color + '"></div>' +
-'<span style="margin-right:4px">' + getIcon(cat) + '</span>' +
-'<span class="legend-label">' + cat + '</span>' +
-'<span class="legend-amount">' + formatYen(val) + '</span>' +
-'<span class="legend-pct">' + pct + '%</span>';
+item.innerHTML = `
+<div class="legend-color" style="background:${color}"></div>
+<span style="margin-right:4px">${getIcon(cat)}</span>
+<span class="legend-label">${cat}</span>
+<span class="legend-amount">${formatYen(val)}</span>
+<span class="legend-pct">${pct}%</span>`;
 legendEl.appendChild(item);
 });
 }
@@ -1784,7 +1585,7 @@ legendEl.appendChild(item);
 function updateSettingsPage() {
 const y = currentYear, m = currentMonth;
 document.getElementById('settingsMonthNote').textContent =
-y + '年' + String(m+1).padStart(2,'0') + '月のカテゴリを編集中';
+`${y}年${String(m+1).padStart(2,'0')}月のカテゴリを編集中`;
 renderCategoryLists();
 }
 
@@ -1797,18 +1598,17 @@ renderCatList('incomeCategoryList', cats.income, 'income');
 function renderCatList(elId, list, type) {
 const el = document.getElementById(elId);
 el.innerHTML = '';
-list.forEach(function(cat, i) {
+list.forEach((cat, i) => {
 const div = document.createElement('div');
 div.className = 'category-item';
-div.innerHTML =
-'<span style="font-size:18px;margin-right:4px">' + getIcon(cat) + '</span>' +
-'<span class="category-name">' + cat + '</span>' +
-'<button class="cat-delete-btn" onclick="deleteCategory(\'' + type + '\', ' + i + ')">×</button>';
+div.innerHTML = `
+<span style="font-size:18px;margin-right:4px">${getIcon(cat)}</span>
+<span class="category-name">${cat}</span>
+<button class="cat-delete-btn" onclick="deleteCategory('${type}', ${i})">×</button>`;
 el.appendChild(div);
 });
 }
 
-// ★ 変更: カスタム絵文字付きでカテゴリ追加
 function addCategory(type) {
 const inputId = type === 'expense' ? 'newExpenseCat' : 'newIncomeCat';
 const val = document.getElementById(inputId).value.trim();
@@ -1816,20 +1616,9 @@ if (!val) { showToast('カテゴリ名を入力してください'); return; }
 const cats = getCats(currentYear, currentMonth);
 cats[type].push(val);
 saveCats(currentYear, currentMonth, cats);
-
-// カスタム絵文字を保存
-var emoji = selectedEmojis[type];
-if (emoji && emoji !== '📌') {
-saveCustomIcon(val, emoji);
-}
-
 document.getElementById(inputId).value = '';
-// 絵文字ボタンをリセット
-selectedEmojis[type] = '📌';
-document.getElementById(type + 'EmojiBtn').textContent = '📌';
-
 renderCategoryLists();
-showToast('カテゴリを追加しました ✨');
+showToast('カテゴリを追加しました');
 }
 
 function deleteCategory(type, index) {
@@ -1845,7 +1634,7 @@ function showToast(msg) {
 const t = document.getElementById('toast');
 t.textContent = msg;
 t.classList.add('show');
-setTimeout(function() { t.classList.remove('show'); }, 2000);
+setTimeout(() => t.classList.remove('show'), 2000);
 }
 
 // ===== BUDGET =====
@@ -1866,7 +1655,7 @@ function getMonthExpenseTotal(y, m) {
 const days = new Date(y, m+1, 0).getDate();
 let total = 0;
 for (let d = 1; d <= days; d++) {
-getEntries(dateStr(y, m, d)).forEach(function(e) { if (e.type === 'expense') total += e.amount; });
+getEntries(dateStr(y, m, d)).forEach(e => { if (e.type === 'expense') total += e.amount; });
 }
 return total;
 }
@@ -1875,7 +1664,7 @@ function getMonthExpenseByCategory(y, m) {
 const days = new Date(y, m+1, 0).getDate();
 const map = {};
 for (let d = 1; d <= days; d++) {
-getEntries(dateStr(y, m, d)).forEach(function(e) {
+getEntries(dateStr(y, m, d)).forEach(e => {
 if (e.type === 'expense') map[e.category] = (map[e.category] || 0) + e.amount;
 });
 }
@@ -1885,9 +1674,8 @@ return map;
 function calcTotalFromCats() {
 const cats = getCats(currentYear, currentMonth).expense;
 let sum = 0;
-cats.forEach(function(cat) {
-const el = document.getElementById('catBudget_' + cat);
-const v = el ? (parseInt(el.value) || 0) : 0;
+cats.forEach(cat => {
+const v = parseInt(document.getElementById('catBudget_' + cat)?.value) || 0;
 sum += v;
 });
 document.getElementById('totalBudgetInput').value = sum > 0 ? sum : '';
@@ -1895,13 +1683,14 @@ document.getElementById('totalBudgetInput').value = sum > 0 ? sum : '';
 
 function renderBudgetPage() {
 const y = currentYear, m = currentMonth;
-document.getElementById('budgetMonthLabel').textContent = y + '年' + String(m+1).padStart(2,'0') + '月の予算';
+document.getElementById('budgetMonthLabel').textContent = `${y}年${String(m+1).padStart(2,'0')}月の予算`;
 
 const budget = getBudget(y, m);
 const used = getMonthExpenseTotal(y, m);
 const catUsed = getMonthExpenseByCategory(y, m);
 const cats = getCats(y, m).expense;
 
+// total
 document.getElementById('totalBudgetInput').value = budget.total || '';
 if (budget.total > 0) {
 document.getElementById('budgetTotalDisplay').textContent = formatYen(budget.total);
@@ -1912,7 +1701,7 @@ const pct = Math.min(Math.round((used / budget.total) * 100), 100);
 const fill = document.getElementById('budgetBarFill');
 fill.style.width = pct + '%';
 fill.className = 'budget-bar-fill' + (used > budget.total ? ' over' : '');
-document.getElementById('budgetBarPct').textContent = pct + '% 使用';
+document.getElementById('budgetBarPct').textContent = `${pct}% 使用`;
 document.getElementById('budgetBarWrap').style.display = 'block';
 } else {
 document.getElementById('budgetTotalDisplay').textContent = '未設定';
@@ -1921,44 +1710,36 @@ document.getElementById('budgetBarWrap').style.display = 'none';
 }
 document.getElementById('budgetUsedDisplay').textContent = formatYen(used);
 
+// category list
 const list = document.getElementById('budgetCatList');
 list.innerHTML = '';
-cats.forEach(function(cat) {
+cats.forEach(cat => {
 const catBudget = budget.cats[cat] || 0;
 const catSpent = catUsed[cat] || 0;
 const pct = catBudget > 0 ? Math.min(Math.round((catSpent / catBudget) * 100), 100) : 0;
 const over = catBudget > 0 && catSpent > catBudget;
 
-const catRemain = catBudget - catSpent;
-var remainHtml = '';
-if (catBudget > 0) {
-if (catRemain >= 0) {
-remainHtml = '<div class="budget-cat-remain positive">残り ' + formatYen(catRemain) + '</div>';
-} else {
-remainHtml = '<div class="budget-cat-remain negative">' + formatYen(Math.abs(catRemain)) + ' 超過</div>';
-}
-}
-
 const item = document.createElement('div');
 item.className = 'budget-cat-item';
-item.innerHTML =
-'<div class="budget-cat-header">' +
-'<div class="budget-cat-name">' + getIcon(cat) + ' ' + cat + '</div>' +
-'<div class="budget-cat-used">' + (catSpent > 0 ? formatYen(catSpent) + ' 使用' : '未使用') + '</div>' +
-'</div>' +
-'<div class="budget-cat-input-row">' +
-'<input type="number" id="catBudget_' + cat + '" value="' + (catBudget || '') + '" placeholder="予算なし" min="0" oninput="calcTotalFromCats()">' +
-'<span class="yen-label">円</span>' +
-'</div>' +
-(catBudget > 0 ? (
-'<div class="budget-cat-bar-bg">' +
-'<div class="budget-cat-bar-fill' + (over ? ' over' : '') + '" style="width:' + pct + '%"></div>' +
-'</div>' +
-'<div style="display:flex;justify-content:space-between;align-items:center">' +
-'<div style="font-size:11px;color:var(--text-muted)">' + pct + '% 使用' + (over ? ' ⚠️' : '') + '</div>' +
-remainHtml +
-'</div>'
-) : '');
+item.onclick = (ev) => {
+// only open detail if not clicking the input
+if (ev.target.tagName !== 'INPUT') openCatDetail(cat);
+};
+item.innerHTML = `
+<div class="budget-cat-header">
+<div class="budget-cat-name">${getIcon(cat)} ${cat}</div>
+<div class="budget-cat-used">${catSpent > 0 ? formatYen(catSpent) + ' 使用' : '未使用'}</div>
+</div>
+<div class="budget-cat-input-row">
+<input type="number" id="catBudget_${cat}" value="${catBudget || ''}" placeholder="予算なし" min="0" oninput="calcTotalFromCats()">
+<span class="yen-label">円</span>
+</div>
+${catBudget > 0 ? `
+<div class="budget-cat-bar-bg">
+<div class="budget-cat-bar-fill${over ? ' over' : ''}" style="width:${pct}%"></div>
+</div>
+<div style="font-size:11px;color:var(--text-muted);text-align:right">${pct}% 使用${over ? ' ⚠️ 超過' : ''}</div>
+` : ''}`;
 list.appendChild(item);
 });
 }
@@ -1968,78 +1749,16 @@ const y = currentYear, m = currentMonth;
 const cats = getCats(y, m).expense;
 const total = parseInt(document.getElementById('totalBudgetInput').value) || 0;
 const catBudgets = {};
-cats.forEach(function(cat) {
-const el = document.getElementById('catBudget_' + cat);
-const val = el ? (parseInt(el.value) || 0) : 0;
+cats.forEach(cat => {
+const val = parseInt(document.getElementById('catBudget_' + cat)?.value) || 0;
 if (val > 0) catBudgets[cat] = val;
 });
-saveBudgetData(y, m, { total: total, cats: catBudgets });
+saveBudgetData(y, m, { total, cats: catBudgets });
 renderBudgetPage();
 showToast('予算を保存しました 💾');
 }
 
-// ===== BACKUP / RESTORE =====
-function exportData() {
-try {
-var backupData = {};
-var keys = ['kakeibo_entries', 'kakeibo_categories', 'kakeibo_budgets', 'kakeibo_custom_icons'];
-keys.forEach(function(key) {
-var val = localStorage.getItem(key);
-if (val) backupData[key] = JSON.parse(val);
-});
-
-var jsonStr = JSON.stringify(backupData, null, 2);
-var blob = new Blob([jsonStr], { type: 'application/json' });
-var url = URL.createObjectURL(blob);
-var a = document.createElement('a');
-var now = new Date();
-var fileName = 'かけいぼ_バックアップ_' + now.getFullYear() + String(now.getMonth()+1).padStart(2,'0') + String(now.getDate()).padStart(2,'0') + '.json';
-a.href = url;
-a.download = fileName;
-document.body.appendChild(a);
-a.click();
-document.body.removeChild(a);
-URL.revokeObjectURL(url);
-showToast('バックアップを保存しました 📤');
-} catch (e) {
-showToast('バックアップに失敗しました');
-}
-}
-
-function importData(event) {
-var file = event.target.files[0];
-if (!file) return;
-
-var reader = new FileReader();
-reader.onload = function(e) {
-try {
-var data = JSON.parse(e.target.result);
-var keys = ['kakeibo_entries', 'kakeibo_categories', 'kakeibo_budgets', 'kakeibo_custom_icons'];
-var restored = 0;
-keys.forEach(function(key) {
-if (data[key]) {
-localStorage.setItem(key, JSON.stringify(data[key]));
-restored++;
-}
-});
-
-if (restored > 0) {
-renderCalendar();
-updateSummary();
-showToast('データを復元しました 📥');
-} else {
-showToast('有効なデータが見つかりませんでした');
-}
-} catch (err) {
-showToast('ファイルの読み込みに失敗しました');
-}
-};
-reader.readAsText(file);
-event.target.value = '';
-}
-
 // ===== INIT =====
-applyMonthTheme(currentMonth);
 renderCalendar();
 updateSummary();
 selectedDate = dateStr(today.getFullYear(), today.getMonth(), today.getDate());
