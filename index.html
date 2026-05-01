@@ -1183,11 +1183,38 @@ function dateStr(y, m, d) {
 return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
 }
 
+// ===== MONTHLY THEME COLOR =====
+const MONTH_THEMES = [
+{ primary: '#9DB8E8', light: '#C2D4F2', dark: '#6A8CC4', bg: '#F2F5FC', border: '#D5E0F5' }, // 1月 冬空ブルー
+{ primary: '#C49DE8', light: '#DAC2F2', dark: '#9A6AC4', bg: '#F8F2FC', border: '#E5D5F5' }, // 2月 バレンタインラベンダー
+{ primary: '#E8A0B8', light: '#F2C2D4', dark: '#C46A8C', bg: '#FCF5F7', border: '#F5D5E0' }, // 3月 桜ピンク
+{ primary: '#88C97A', light: '#AEDDA4', dark: '#5BA04A', bg: '#F3FAF2', border: '#C8ECC4' }, // 4月 若葉グリーン
+{ primary: '#7ABDC9', light: '#A4D4DA', dark: '#4A90A0', bg: '#F2F9FA', border: '#C4E4E8' }, // 5月 新緑ティール
+{ primary: '#E8C878', light: '#F2DCA4', dark: '#C4A048', bg: '#FCF9F2', border: '#F5EAC4' }, // 6月 あじさいゴールド
+{ primary: '#E87878', light: '#F2A4A4', dark: '#C44848', bg: '#FCF2F2', border: '#F5C4C4' }, // 7月 夏レッド
+{ primary: '#E8A070', light: '#F2C4A4', dark: '#C47040', bg: '#FCF5F2', border: '#F5D5C4' }, // 8月 夕焼けオレンジ
+{ primary: '#D4A060', light: '#E8C490', dark: '#A87030', bg: '#FCF8F2', border: '#F5E4C4' }, // 9月 秋ゴールド
+{ primary: '#C48860', light: '#DAB090', dark: '#985030', bg: '#FCF5F0', border: '#F5DEC8' }, // 10月 紅葉ブラウン
+{ primary: '#8898C8', light: '#B0BCDC', dark: '#5060A0', bg: '#F2F3FC', border: '#C8CCEC' }, // 11月 霜降りブルー
+{ primary: '#E8789A', light: '#F2A8BC', dark: '#C45578', bg: '#FDF5F7', border: '#F0DDE4' }, // 12月 冬ピンク
+];
+
+function applyMonthTheme(month) {
+const t = MONTH_THEMES[month];
+const root = document.documentElement;
+root.style.setProperty('--primary', t.primary);
+root.style.setProperty('--primary-light', t.light);
+root.style.setProperty('--primary-dark', t.dark);
+root.style.setProperty('--bg', t.bg);
+root.style.setProperty('--border', t.border);
+}
+
 // ===== NAVIGATION =====
 function changeMonth(delta) {
 currentMonth += delta;
 if (currentMonth > 11) { currentMonth = 0; currentYear++; }
 if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+applyMonthTheme(currentMonth);
 renderCalendar();
 updateSummary();
 updateSettingsPage();
@@ -1759,6 +1786,7 @@ showToast('予算を保存しました 💾');
 }
 
 // ===== INIT =====
+applyMonthTheme(currentMonth);
 renderCalendar();
 updateSummary();
 selectedDate = dateStr(today.getFullYear(), today.getMonth(), today.getDate());
