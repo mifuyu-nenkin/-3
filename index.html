@@ -240,7 +240,7 @@ gap: 1px;
 }
 
 .day-income {
-font-size: 10px;
+font-size: 9px;
 color: var(--income);
 font-weight: 500;
 line-height: 1.2;
@@ -250,7 +250,7 @@ text-overflow: ellipsis;
 }
 
 .day-expense {
-font-size: 10px;
+font-size: 9px;
 color: var(--expense);
 font-weight: 500;
 line-height: 1.2;
@@ -522,6 +522,30 @@ padding: 10px 12px;
 gap: 10px;
 }
 
+.cat-icon-btn {
+background: var(--white);
+border: 1px solid var(--border);
+border-radius: 8px;
+font-size: 18px;
+width: 36px;
+height: 36px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: border-color 0.2s, transform 0.1s;
+flex-shrink: 0;
+}
+
+.cat-icon-btn:hover { border-color: var(--primary); }
+.cat-icon-btn:active { transform: scale(0.92); }
+
+.icon-hint {
+font-size: 11px;
+color: var(--text-muted);
+margin-top: 6px;
+}
+
 .category-name {
 flex: 1;
 font-size: 14px;
@@ -555,6 +579,7 @@ font-family: 'Noto Sans JP', sans-serif;
 outline: none;
 background: var(--white);
 transition: border-color 0.2s;
+min-width: 0;
 }
 
 .add-category-row input[type="text"]:focus { border-color: var(--primary); }
@@ -574,6 +599,21 @@ white-space: nowrap;
 
 .add-category-row button:hover { opacity: 0.88; }
 
+.add-category-row .emoji-select-btn {
+background: var(--white);
+border: 1px solid var(--border);
+border-radius: 8px;
+font-size: 18px;
+width: 42px;
+padding: 0;
+cursor: pointer;
+transition: border-color 0.2s;
+flex-shrink: 0;
+color: var(--text);
+}
+
+.add-category-row .emoji-select-btn:hover { border-color: var(--primary); opacity: 1; }
+
 .month-scope-note {
 font-size: 12px;
 color: var(--text-muted);
@@ -581,6 +621,64 @@ background: #FFF3EA;
 border-radius: 8px;
 padding: 8px 12px;
 border-left: 3px solid var(--primary);
+}
+
+/* ===== EMOJI PICKER ===== */
+.emoji-grid {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+gap: 6px;
+max-height: 42vh;
+overflow-y: auto;
+padding: 2px;
+}
+
+.emoji-cell {
+font-size: 24px;
+background: var(--bg);
+border: 1px solid var(--border);
+border-radius: 10px;
+padding: 8px 0;
+text-align: center;
+cursor: pointer;
+transition: background 0.15s, transform 0.1s;
+line-height: 1;
+}
+
+.emoji-cell:hover { background: #FFE8EF; }
+.emoji-cell:active { transform: scale(0.9); }
+
+.custom-emoji-row {
+display: flex;
+gap: 8px;
+margin-top: 14px;
+}
+
+.custom-emoji-row input {
+flex: 1;
+border: 1px solid var(--border);
+border-radius: 8px;
+padding: 9px 12px;
+font-size: 16px;
+font-family: 'Noto Sans JP', sans-serif;
+outline: none;
+background: var(--white);
+transition: border-color 0.2s;
+min-width: 0;
+}
+
+.custom-emoji-row input:focus { border-color: var(--primary); }
+
+.custom-emoji-row button {
+background: var(--primary);
+color: white;
+border: none;
+border-radius: 8px;
+padding: 9px 16px;
+font-size: 14px;
+cursor: pointer;
+font-family: 'Noto Sans JP', sans-serif;
+white-space: nowrap;
 }
 
 /* ===== MODAL ===== */
@@ -989,14 +1087,17 @@ margin-top: 4px;
 <div style="height:10px"></div>
 <div class="category-list" id="expenseCategoryList"></div>
 <div class="add-category-row" style="margin-top:8px">
+<button class="emoji-select-btn" id="newExpenseIconBtn" onclick="openIconPicker('new', 'expense')" title="絵文字を選ぶ">🙂</button>
 <input type="text" id="newExpenseCat" placeholder="新しいカテゴリ名">
 <button onclick="addCategory('expense')">追加</button>
 </div>
+<div class="icon-hint">💡 左の🙂ボタンで好きな絵文字を選べます。カテゴリ一覧の絵文字をタップしても変更できます</div>
 </div>
 <div>
 <div class="settings-section-title">収入カテゴリ</div>
 <div class="category-list" id="incomeCategoryList"></div>
 <div class="add-category-row" style="margin-top:8px">
+<button class="emoji-select-btn" id="newIncomeIconBtn" onclick="openIconPicker('new', 'income')" title="絵文字を選ぶ">🙂</button>
 <input type="text" id="newIncomeCat" placeholder="新しいカテゴリ名">
 <button onclick="addCategory('income')">追加</button>
 </div>
@@ -1078,6 +1179,21 @@ margin-top: 4px;
 </div>
 </div>
 
+<!-- ICON PICKER MODAL -->
+<div class="modal-overlay" id="iconPickerModal">
+<div class="modal">
+<div class="modal-header">
+<div class="modal-title" id="iconPickerTitle">🎨 絵文字を選ぶ</div>
+<button class="modal-close" onclick="closeIconPicker()">×</button>
+</div>
+<div class="emoji-grid" id="emojiGrid"></div>
+<div class="custom-emoji-row">
+<input type="text" id="customEmojiInput" placeholder="他の絵文字を入力（例：🐣）" maxlength="8">
+<button onclick="pickCustomEmoji()">これにする</button>
+</div>
+</div>
+</div>
+
 <script>
 // ===== STATE =====
 const today = new Date();
@@ -1112,7 +1228,17 @@ const CAT_ICONS = {
 '通信費':'📱','保険':'🏥','家賃':'🏠','旅行':'✈️','ペット':'🐾','贈り物':'🎁',
 '給与':'💴','副業':'💻','その他収入':'🌟','ボーナス':'🎉','投資':'📈','年金':'🏦',
 };
+
+// ユーザーが自分で選んだ絵文字（カテゴリ名ごとに保存）
+let customIcons = load('icons', {});
+
+function setCustomIcon(name, emoji) {
+customIcons[name] = emoji;
+save('icons', customIcons);
+}
+
 function getIcon(name) {
+if (customIcons[name]) return customIcons[name]; // 自分で選んだ絵文字を最優先
 if (CAT_ICONS[name]) return CAT_ICONS[name];
 if (name.includes('食')) return '🍽️';
 if (name.includes('交通')||name.includes('電車')||name.includes('バス')) return '🚃';
@@ -1280,8 +1406,8 @@ if (dow === 6) div.classList.add('saturday');
 div.innerHTML = `
 <div class="day-num">${cell.day}</div>
 <div class="day-amounts">
-${totalIncome > 0 ? `<div class="day-income">+${totalIncome >= 10000 ? Math.round(totalIncome/1000)+'k' : totalIncome.toLocaleString()}</div>` : ''}
-${totalExpense > 0 ? `<div class="day-expense">-${totalExpense >= 10000 ? Math.round(totalExpense/1000)+'k' : totalExpense.toLocaleString()}</div>` : ''}
+${totalIncome > 0 ? `<div class="day-income">+${totalIncome.toLocaleString()}</div>` : ''}
+${totalExpense > 0 ? `<div class="day-expense">-${totalExpense.toLocaleString()}</div>` : ''}
 </div>`;
 
 div.onclick = () => {
@@ -1590,8 +1716,10 @@ ctx.fillStyle = '#333';
 ctx.font = 'bold 13px Zen Kaku Gothic New';
 ctx.textAlign = 'center';
 ctx.fillText('合計', 120, 116);
-ctx.font = 'bold 15px Zen Kaku Gothic New';
-ctx.fillText(total >= 10000 ? Math.round(total/1000)+'k円' : formatYen(total), 120, 134);
+// 金額はフル表示（桁が多い場合は少し小さいフォントで表示）
+const totalText = formatYen(total);
+ctx.font = totalText.length > 8 ? 'bold 12px Zen Kaku Gothic New' : 'bold 15px Zen Kaku Gothic New';
+ctx.fillText(totalText, 120, 134);
 
 entries.sort((a, b) => b[1] - a[1]).forEach(([cat, val], i) => {
 const color = colors[i % colors.length];
@@ -1629,7 +1757,7 @@ list.forEach((cat, i) => {
 const div = document.createElement('div');
 div.className = 'category-item';
 div.innerHTML = `
-<span style="font-size:18px;margin-right:4px">${getIcon(cat)}</span>
+<button class="cat-icon-btn" onclick="openIconPickerForCat('${type}', ${i})" title="絵文字を変更">${getIcon(cat)}</button>
 <span class="category-name">${cat}</span>
 <button class="cat-delete-btn" onclick="deleteCategory('${type}', ${i})">×</button>`;
 el.appendChild(div);
@@ -1643,6 +1771,14 @@ if (!val) { showToast('カテゴリ名を入力してください'); return; }
 const cats = getCats(currentYear, currentMonth);
 cats[type].push(val);
 saveCats(currentYear, currentMonth, cats);
+
+// 追加前に絵文字を選んでいた場合、そのカテゴリに紐付けて保存
+if (pendingNewIcon[type]) {
+setCustomIcon(val, pendingNewIcon[type]);
+pendingNewIcon[type] = null;
+document.getElementById(type === 'expense' ? 'newExpenseIconBtn' : 'newIncomeIconBtn').textContent = '🙂';
+}
+
 document.getElementById(inputId).value = '';
 renderCategoryLists();
 showToast('カテゴリを追加しました');
@@ -1654,6 +1790,89 @@ cats[type].splice(index, 1);
 saveCats(currentYear, currentMonth, cats);
 renderCategoryLists();
 showToast('カテゴリを削除しました');
+}
+
+// ===== EMOJI PICKER =====
+const EMOJI_CHOICES = [
+'🍚','🍜','🍞','🥗','🍰','🍎','🍱','☕','🍺','🛒','🍽️','🥡','🍙','🍣',
+'🚃','🚌','🚗','🚕','⛽','🚲','✈️','🚄',
+'🏠','💡','🚿','🧴','🧻','🛋️','🧺','🧹',
+'📱','💻','🎮','🎬','🎵','📚','✏️','🎨','⚽','🏋️','🎤','🎣','🎾','🏊',
+'💊','🏥','🦷','💄','💇','👗','👟','👜','💍','⌚','🕶️',
+'🐾','🐶','🐱','🌸','🎁','🧳','👶','🎪',
+'💴','💰','💳','📈','🏦','🎉','🌟','🪙','🧧',
+'📦','📌','🔧','🧾','🎂','🍀'
+];
+
+// 絵文字ピッカーの状態
+// mode: 'new'（新規カテゴリ用） or 'edit'（既存カテゴリの変更）
+let iconPickTarget = null;
+let pendingNewIcon = { expense: null, income: null };
+
+function openIconPicker(mode, type) {
+iconPickTarget = { mode, type };
+document.getElementById('iconPickerTitle').textContent = '🎨 絵文字を選ぶ';
+renderEmojiGrid();
+document.getElementById('customEmojiInput').value = '';
+document.getElementById('iconPickerModal').classList.add('open');
+}
+
+function openIconPickerForCat(type, index) {
+const cats = getCats(currentYear, currentMonth);
+const name = cats[type][index];
+if (!name) return;
+iconPickTarget = { mode: 'edit', type, name };
+document.getElementById('iconPickerTitle').textContent = `🎨 「${name}」の絵文字を選ぶ`;
+renderEmojiGrid();
+document.getElementById('customEmojiInput').value = '';
+document.getElementById('iconPickerModal').classList.add('open');
+}
+
+function renderEmojiGrid() {
+const grid = document.getElementById('emojiGrid');
+grid.innerHTML = '';
+EMOJI_CHOICES.forEach(emoji => {
+const cell = document.createElement('div');
+cell.className = 'emoji-cell';
+cell.textContent = emoji;
+cell.onclick = () => selectIcon(emoji);
+grid.appendChild(cell);
+});
+}
+
+function pickCustomEmoji() {
+const val = document.getElementById('customEmojiInput').value.trim();
+if (!val) { showToast('絵文字を入力してください'); return; }
+selectIcon(val);
+}
+
+function selectIcon(emoji) {
+if (!iconPickTarget) return;
+
+if (iconPickTarget.mode === 'new') {
+// 新規カテゴリ用：追加ボタンを押したときに保存されるよう一時保持
+pendingNewIcon[iconPickTarget.type] = emoji;
+const btnId = iconPickTarget.type === 'expense' ? 'newExpenseIconBtn' : 'newIncomeIconBtn';
+document.getElementById(btnId).textContent = emoji;
+showToast(`絵文字を選びました ${emoji}`);
+} else if (iconPickTarget.mode === 'edit') {
+// 既存カテゴリの絵文字を変更
+setCustomIcon(iconPickTarget.name, emoji);
+renderCategoryLists();
+renderCalendar();
+updateCategorySelect();
+if (document.getElementById('page-input').classList.contains('active')) renderEntryList();
+if (document.getElementById('page-graph').classList.contains('active')) renderGraphs();
+if (document.getElementById('page-budget').classList.contains('active')) renderBudgetPage();
+showToast(`絵文字を変更しました ${emoji}`);
+}
+
+closeIconPicker();
+}
+
+function closeIconPicker() {
+document.getElementById('iconPickerModal').classList.remove('open');
+iconPickTarget = null;
 }
 
 // ===== TOAST =====
